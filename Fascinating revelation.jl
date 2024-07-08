@@ -20,6 +20,15 @@ using GLMakie
 # ╔═╡ f3ca2576-2739-408a-93ca-ce00a6327c4f
 using PlutoUI
 
+# ╔═╡ 74ffa81f-2455-429c-9b91-3f45db97602c
+using Interact
+
+# ╔═╡ d119a8cc-da20-4034-abae-1beab1afafd6
+using Plots
+
+# ╔═╡ 87c40dac-7a9c-4a65-9710-b23ff60af966
+using WebIO
+
 # ╔═╡ 8fac769f-6210-4307-a259-856f5854fad2
 md"""
 ## Welcome!
@@ -51,11 +60,59 @@ Cosecant, secant, and cotangent are trigonometric functions that reciprocate sin
 ## Plotting and Visualizing Trigonometric Functions
 """
 
+# ╔═╡ 39ebb5a4-2d3b-4037-b695-c7cc7f70c8df
+md"""
+
+!!! question "GLMakie"
+    GLMakie is a Julia package designed for creating high-performance, GPU-accelerated scientific visualizations. It leverages modern OpenGL (Open Graphics Library) for rendering, enabling interactive and high-quality 2D and 3D plotting capabilities. GLMakie emphasizes smooth and responsive interactive exploration of data, making it suitable for both exploratory data analysis and publication-quality graphics.
+
+"""
+
+# ╔═╡ 92ab1be4-aab2-4dcc-894d-4c393971eb3e
+md"""
+
+!!! question "PlutoUI"
+    PlutoUI refers to the user interface (UI) components and interactive elements used in Pluto.jl, which is a reactive notebook environment built in Julia. PlutoUI includes various widgets, controls, and display elements that facilitate interactive data exploration, visualization, and analysis directly within Pluto notebooks.
+
+"""
+
+# ╔═╡ cbca0c02-3ade-4f19-a18d-6c7aa9534ef9
+md"""
+
+!!! question "Interact"
+    Interact provides a powerful mechanism for creating interactive and responsive computational notebooks, facilitating interactive data analysis, teaching, and prototyping in scientific computing and data science workflows.
+
+"""
+
+# ╔═╡ 554ecabc-1cba-40b0-8453-bfc2c46cf3b8
+md"""
+
+!!! question "Plots"
+    Plots.jl is a versatile plotting library in Julia that combines ease of use with powerful customization options and broad backend support, making it a preferred choice for scientific computing, data visualization, and research applications in Julia.
+
+"""
+
+# ╔═╡ 6ff7794d-cbc6-473f-9b2b-b1e054f05840
+md"""
+
+!!! question "WebIO"
+    WebIO extends Julia’s capabilities by enabling the creation of interactive web interfaces, fostering a seamless integration of computational capabilities with interactive user experiences, and enhancing the accessibility and usability of Julia-based applications.
+
+"""
+
 # ╔═╡ 49e9c322-6d5f-4d59-b7d0-74f124fb0d2c
 x = LinRange(0, 2π, 1000)
 
 # ╔═╡ 6380f334-7db7-4043-97c6-46012c7dd3a8
 frames = 1000
+
+# ╔═╡ 8b859bbe-83fb-40b1-bfaa-3a1b4399f616
+md"""
+## Function frame_data(t)
+
+The function `frame_data(t)` in Julia computes multiple trigonometric functions (`sin`, `cos`, `tan`, `csc`, `sec`, `cot`) over a range of values determined by an array `x`. It calculates these functions at a phase angle that varies with time `t`, using the formula `phase = 2π * t / frames`, where `frames` represents a constant or variable defining the number of frames or steps. For each function, the phase-shifted values are computed (`y_sin`, `y_cos`, `y_tan`, `y_csc`, `y_sec`, `y_cot`) and returned as a tuple. This function is designed to generate data for visualizing how these trigonometric functions evolve over time, typically for animation or simulation purposes. Additionally, it initializes a figure `fig` with a resolution of `(800, 1200)` pixels, presumably using a plotting environment like `Figure` to facilitate visualization of the generated data. This setup ensures that the computed trigonometric data can be readily plotted or analyzed in a graphical format.
+
+"""
 
 # ╔═╡ a6c2363b-d6bc-4002-b2f1-c38e8f289b5c
 begin
@@ -86,9 +143,9 @@ ax3 = Axis(fig[3, 1], title="Tangent and Cotangent Function")
 
 # ╔═╡ 5cb852f7-9137-4f99-9037-c77f118dd032
 begin
-	ylims!(ax3, -10, 10)
-	ylims!(ax2, -10, 10)
-	ylims!(ax1, -5, 5)
+	GLMakie.ylims!(ax3, -10, 10)
+	GLMakie.ylims!(ax2, -10, 10)
+	GLMakie.ylims!(ax1, -5, 5)
 	
 	# Initialize lines
 end
@@ -137,55 +194,22 @@ fig
 # ╔═╡ 644c3791-917b-47ba-8e6c-372e500b259f
 
 
+# ╔═╡ 4749cc90-6da6-4b7e-8cef-d8f781c59ff7
+md"""
+## update_rotating_triangle(t)
+
+The function update_rotating_triangle! calculates the positions of various elements in a graphical representation of a rotating triangle based on a given parameter t. It computes the angles and trigonometric functions (cosine, sine, tangent, cotangent, secant, cosecant) of the angle 2π * t / frames. These values are used to update the positions of the hypotenuse, opposite, and adjacent lines of the triangle, as well as text labels indicating the current values of sine, cosine, tangent, cotangent, secant, and cosecant functions at that angle. The function ensures that the graphical elements accurately reflect the geometric and trigonometric relationships as the angle t changes over time or frames.
+
+"""
+
 # ╔═╡ 3fd73f80-7a0b-4878-97fe-0083b2845f59
 fig2 = Figure(resolution=(600, 600))
 
 # ╔═╡ 7b8c9c79-c43d-4b85-b464-871c2a5ea8e7
-# ╠═╡ disabled = true
-#=╠═╡
-ax = Axis(fig2[1, 1], title="Unit Circle with Rotating Triangle")
-  ╠═╡ =#
-
-# ╔═╡ c834353e-8942-482b-8300-320315cbf030
-
-
-# ╔═╡ e885e263-0220-41b3-a9db-dbf93e6a3699
-begin
-    gif_path = "trigonometric_functions185.gif"
-        y_sin, y_cos, y_tan, y_csc, y_sec, y_cot = frame_data(0)
-    record(fig, gif_path, 1:frames) do t
-	#record(fig, gif_path, 1:frames; framerate=30) do t
-        lines_sin[1] = [Point2(x1,y1) for (x1,y1) in zip(x[1:t],y_sin[1:t])]
-		lines_cos[1] = [Point2(x1,y1) for (x1,y1) in zip(x[1:t],y_cos[1:t])]
-		lines_tan[1] = [Point2(x1, y1) for (x1, y1) in zip(x[1:t], y_tan[1:t])]
-		lines_csc[1] = [Point2(x1, y1) for (x1, y1) in zip(x[1:t], y_csc[1:t])]
-		lines_sec[1] = [Point2(x1, y1) for (x1, y1) in zip(x[1:t], y_sec[1:t])]
-		lines_cot[1] = [Point2(x1, y1) for (x1, y1) in zip(x[1:t], y_cot[1:t])]
-        #lines_sin[2] = y_sin[1:t]
-       #= lines_cos[1] = x[1:t]
-        lines_cos[2] = y_cos[1:t]
-        lines_tan[1] = x[1:t]
-        lines_tan[2] = y_tan[1:t]
-        lines_csc[1] = x[1:t]
-        lines_csc[2] = y_csc[1:t]
-        lines_sec[1] = x[1:t]
-        lines_sec[2] = y_sec[1:t]
-        lines_cot[1] = x[1:t]
-        lines_cot[2] = y_cot[1:t]
-	   =#
-    end
-end
-
-# ╔═╡ 4f940b09-d8c0-4ca2-ac42-436078c45368
-begin
-    @bind _show_gif PlutoUI.LocalResource(gif_path)
-end
-
-# ╔═╡ e25199ca-9183-4daa-bdbe-6076569518b1
 ax = Axis(fig2[1, 1], title="Unit Circle with Rotating Triangle")
 
 # ╔═╡ f22c3d68-3f95-456b-b9d6-0adb30b0aa11
-ylims!(ax, -1.5, 1.5)
+GLMakie.ylims!(ax, -1.5, 1.5)
 
 # ╔═╡ db51b52a-be4b-4bef-9045-5b745ba754ff
 circle = lines!(ax, cos.(LinRange(0, 2π, 100)), sin.(LinRange(0, 2π, 100)), color=:black)
@@ -256,11 +280,41 @@ end
 
 # Initialize the figure for the rotating triangle
 
+# ╔═╡ e885e263-0220-41b3-a9db-dbf93e6a3699
+begin
+    gif_path = "trigonometric_functions185.gif"
+        y_sin, y_cos, y_tan, y_csc, y_sec, y_cot = frame_data(0)
+    record(fig, gif_path, 1:frames) do t
+	#record(fig, gif_path, 1:frames; framerate=30) do t
+        lines_sin[1] = [Point2(x1,y1) for (x1,y1) in zip(x[1:t],y_sin[1:t])]
+		lines_cos[1] = [Point2(x1,y1) for (x1,y1) in zip(x[1:t],y_cos[1:t])]
+		lines_tan[1] = [Point2(x1, y1) for (x1, y1) in zip(x[1:t], y_tan[1:t])]
+		lines_csc[1] = [Point2(x1, y1) for (x1, y1) in zip(x[1:t], y_csc[1:t])]
+		lines_sec[1] = [Point2(x1, y1) for (x1, y1) in zip(x[1:t], y_sec[1:t])]
+		lines_cot[1] = [Point2(x1, y1) for (x1, y1) in zip(x[1:t], y_cot[1:t])]
+        #lines_sin[2] = y_sin[1:t]
+       #= lines_cos[1] = x[1:t]
+        lines_cos[2] = y_cos[1:t]
+        lines_tan[1] = x[1:t]
+        lines_tan[2] = y_tan[1:t]
+        lines_csc[1] = x[1:t]
+        lines_csc[2] = y_csc[1:t]
+        lines_sec[1] = x[1:t]
+        lines_sec[2] = y_sec[1:t]
+        lines_cot[1] = x[1:t]
+        lines_cot[2] = y_cot[1:t]
+	   =#
+    end
+end
+
+# ╔═╡ e25199ca-9183-4daa-bdbe-6076569518b1
+axx = Axis(fig2[1, 1], title="Unit Circle with Rotating Triangle")
+
 # ╔═╡ 379d842a-1dfb-438e-85f0-36fe716297f9
-xlims!(ax, -1.5, 1.5)
+GLMakie.xlims!(ax, -1.5, 1.5)
 
 # ╔═╡ 7910f290-225e-4f03-9bcf-8d9fbd1a5636
-ylims!(ax, -1.5, 1.5)
+GLMakie.ylims!(ax, -1.5, 1.5)
 
 # ╔═╡ 4c106990-d55d-4266-ac53-0458725bb68f
 fig2
@@ -269,22 +323,122 @@ fig2
 gif_path2 = "rotating_triangle11.gif"
 
 # ╔═╡ b055a193-08a7-4fe9-8dbe-1086c51b46fe
-record(fig2, gif_path2, 1:frames; framerate=30) do t
-    update_rotating_triangle!(t)
+record(fig2, gif_path2, 1:frames; framerate=20) do t
+    update_rotating_triangle!(0.75t)
 end
 
-# ╔═╡ 9ec8c454-618d-4aad-9ed7-8ec7d47dd51b
+# ╔═╡ b1b9c4d8-6038-46ac-bb37-d7921265ccf0
 @bind _show_gif2 PlutoUI.LocalResource(gif_path2)
+
+# ╔═╡ ba630d7b-7425-4341-b9d4-8c0a93a028f6
+md"""
+## plot_trigonometric_functions(angle)
+
+The function `plot_trigonometric_functions(angle)` generates a visual representation of trigonometric concepts on a unit circle and a rotating triangle based on the input angle. It first computes coordinates for the unit circle, the rotating triangle's vertices, and perpendicular lines from the point on the circle to the x-axis and y-axis. Depending on the angle, it calculates coordinates for tangent, cotangent, secant, and cosecant lines, ensuring proper handling for extreme cases. Finally, it plots these elements using the Plots.jl library, illustrating the unit circle, hypotenuse, trigonometric lines, and the point on the circle. This function provides a clear graphical depiction of trigonometric relationships and functions, aiding in visual comprehension and educational demonstrations of trigonometry principles.
+
+"""
+
+# ╔═╡ 69697c8b-9932-4511-9d34-c4008109a84f
+function plot_trigonometric_functions(angle)
+    # Unit circle
+    theta = range(0, stop=2π, length=100)
+    x_circle = cos.(theta)
+    y_circle = sin.(theta)
+    
+    # Rotating triangle vertices
+    x_triangle = [0, cos(angle)]
+    y_triangle = [0, sin(angle)]
+    
+    # Coordinates for the perpendicular line from the point on the circle to the x-axis
+    x_perp = [cos(angle), cos(angle)]
+    y_perp = [0, sin(angle)]
+
+    # Coordinates for the perpendicular line from the point on the circle to the y-axis
+    x_perp_y = [0, cos(angle)]
+    y_perp_y = [sin(angle), sin(angle)]
+    
+    # Coordinates for the tangent line
+    if abs(cos(angle)) > 1e-6
+        x_tan = [cos(angle), 1]
+        y_tant = [sin(angle), sin(angle) + tan(angle) * (1 - cos(angle))]
+    else
+        x_tan = [cos(angle), cos(angle)]
+        y_tant = [-10, 10]
+    end
+    
+    # Coordinates for the cotangent line
+    if abs(sin(angle)) > 1e-6
+        x_cot = [cos(angle), cos(angle) + cot(angle) * sin(angle)]
+        y_cott = [sin(angle), 1]
+    else
+        x_cot = [-10, 10]
+        y_cott = [sin(angle), sin(angle)]
+    end
+
+    # Coordinates for the secant line
+    x_sec = [0, 1 / cos(angle)]
+    y_sect = [0, tan(angle)]
+
+    # Coordinates for the cosecant line
+    x_csc = [0, cot(angle)]
+    y_csct = [0, 1 / sin(angle)]
+
+    # Plotting
+    Plots.plot(x_circle, y_circle, label="Unit Circle", aspect_ratio=:equal, legend=:topright, legendfontsize=5, title="Unit Circle with Rotating Triangle and Trig. Functions", xlim=(-2, 2), ylim=(-2, 2))
+    Plots.plot!([0, cos(angle)], [0, sin(angle)], label="Hypotenuse (r=1)", linewidth=2, color=:blue)
+    Plots.plot!(x_perp, y_perp, label="Opposite (sin)", linestyle=:dash, color=:green)
+    Plots.plot!(x_perp_y, y_perp_y, label="Adjacent (cos)", linestyle=:dash, color=:red)
+    Plots.plot!(x_tan, y_tant, label="Tangent (tan)", linestyle=:dot, color=:orange)
+    Plots.plot!(x_cot, y_cott, label="Cotangent (cot)", linestyle=:dot, color=:purple)
+    Plots.plot!(x_sec, y_sect, label="Secant (sec)", linestyle=:dashdot, color=:brown)
+    Plots.plot!(x_csc, y_csct, label="Cosecant (csc)", linestyle=:dashdot, color=:pink)
+    Plots.scatter!([cos(angle)], [sin(angle)], label="Point on Circle", color=:black)
+end
+
+# Create the interactive slider with angle in degrees
+
+# ╔═╡ e4aac751-ed69-491c-8450-b8de844b3993
+md"""
+## Plotting of Trigonometric Functions GIF
+"""
+
+# ╔═╡ d2bd035c-40e3-4d69-a204-fab8d9c9c067
+@bind _show_gif PlutoUI.LocalResource(gif_path)
+
+# ╔═╡ 1e1cb55b-8da4-4201-bfe3-e035e4e7b368
+md"""
+### Angle Slider Bar
+"""
+
+# ╔═╡ 43a1b429-0259-4766-9902-4c592c3d5295
+@bind angle_degrees PlutoUI.Slider(0:5:360, show_value=true, default=0)
+
+# ╔═╡ 6b155ac3-a839-4dc5-be8d-941296380d61
+angle_radians = deg2rad(angle_degrees)
+
+# ╔═╡ 12af3d01-9582-40ce-83e8-d990c29416c1
+md"""
+## Unit Circle Triangle with Interactive Visuals based on Angles
+"""
+
+# ╔═╡ 281eb34d-6db1-4a64-86c1-a981625550e7
+plot_trigonometric_functions(angle_radians)
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 GLMakie = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
+Interact = "c601a237-2ae4-5e1e-952c-7a85b0c7eef1"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+WebIO = "0f1e0344-ec1d-5b48-a673-e5cf874b6c29"
 
 [compat]
 GLMakie = "~0.10.2"
+Interact = "~0.10.5"
+Plots = "~1.40.4"
 PlutoUI = "~0.7.59"
+WebIO = "~0.8.21"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -293,7 +447,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.10.3"
 manifest_format = "2.0"
-project_hash = "b0b4ab72e234ff0d7a62ddf5ef8abf79478669a7"
+project_hash = "6f4157588eba6670d0daf4467aa0d2f42c49df0d"
 
 [[deps.AbstractFFTs]]
 deps = ["LinearAlgebra"]
@@ -346,6 +500,12 @@ version = "1.1.1"
 [[deps.Artifacts]]
 uuid = "56f22d72-fd6d-98f1-02f0-08ddc0907c33"
 
+[[deps.AssetRegistry]]
+deps = ["Distributed", "JSON", "Pidfile", "SHA", "Test"]
+git-tree-sha1 = "b25e88db7944f98789130d7b503276bc34bc098e"
+uuid = "bf4720bc-e11a-5d0c-854e-bdca1663c893"
+version = "0.1.0"
+
 [[deps.Automa]]
 deps = ["PrecompileTools", "TranscodingStreams"]
 git-tree-sha1 = "588e0d680ad1d7201d4c6a804dcb1cd9cba79fbb"
@@ -367,6 +527,11 @@ version = "0.4.7"
 [[deps.Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
+[[deps.BitFlags]]
+git-tree-sha1 = "2dc09997850d68179b69dafb58ae806167a32b1b"
+uuid = "d1d4a3ce-64b1-5f1a-9ba4-7e7e69966f35"
+version = "0.1.8"
+
 [[deps.Bzip2_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "9e2a6b69137e6969bab0152632dcb3bc108c8bdd"
@@ -386,6 +551,12 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "e329286945d0cfc04456972ea732551869af1cfc"
 uuid = "4e9b3aee-d8a1-5a3d-ad8b-7d824db253f0"
 version = "1.0.1+0"
+
+[[deps.CSSUtil]]
+deps = ["Colors", "JSON", "Markdown", "Measures", "WebIO"]
+git-tree-sha1 = "b9fb4b464ec10e860abe251b91d4d049934f7399"
+uuid = "70588ee8-6100-5070-97c1-3cb50ed05fe8"
+version = "0.1.1"
 
 [[deps.Cairo_jll]]
 deps = ["Artifacts", "Bzip2_jll", "CompilerSupportLibraries_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "JLLWrappers", "LZO_jll", "Libdl", "Pixman_jll", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Zlib_jll", "libpng_jll"]
@@ -408,6 +579,12 @@ weakdeps = ["SparseArrays"]
 
     [deps.ChainRulesCore.extensions]
     ChainRulesCoreSparseArraysExt = "SparseArrays"
+
+[[deps.CodecZlib]]
+deps = ["TranscodingStreams", "Zlib_jll"]
+git-tree-sha1 = "59939d8a997469ee05c4b4944560a820f9ba0d73"
+uuid = "944b1d66-785c-5afd-91f1-9de20f533193"
+version = "0.7.4"
 
 [[deps.ColorBrewer]]
 deps = ["Colors", "JSON", "Test"]
@@ -458,6 +635,12 @@ deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
 version = "1.1.1+0"
 
+[[deps.ConcurrentUtilities]]
+deps = ["Serialization", "Sockets"]
+git-tree-sha1 = "6cbbd4d241d7e6579ab354737f4dd95ca43946e1"
+uuid = "f0e56b4a-5159-44fe-b623-3e5288b988bb"
+version = "2.4.1"
+
 [[deps.ConstructionBase]]
 deps = ["LinearAlgebra"]
 git-tree-sha1 = "260fd2400ed2dab602a7c15cf10c1933c59930a2"
@@ -499,6 +682,12 @@ deps = ["EnumX", "ExactPredicates", "Random"]
 git-tree-sha1 = "1755070db557ec2c37df2664c75600298b0c1cfc"
 uuid = "927a84f5-c5f4-47a5-9785-b46e178433df"
 version = "1.0.3"
+
+[[deps.DelimitedFiles]]
+deps = ["Mmap"]
+git-tree-sha1 = "9e2f36d3c96a820c678f2f1f1782582fcf685bae"
+uuid = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+version = "1.9.1"
 
 [[deps.Distributed]]
 deps = ["Random", "Serialization", "Sockets"]
@@ -548,11 +737,23 @@ git-tree-sha1 = "bdb1942cd4c45e3c678fd11569d5cccd80976237"
 uuid = "4e289a0a-7415-4d19-859d-a7e5c4648b56"
 version = "1.0.4"
 
+[[deps.EpollShim_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl"]
+git-tree-sha1 = "8e9441ee83492030ace98f9789a654a6d0b1f643"
+uuid = "2702e6a9-849d-5ed8-8c21-79e8b8f9ee43"
+version = "0.0.20230411+0"
+
 [[deps.ExactPredicates]]
 deps = ["IntervalArithmetic", "Random", "StaticArrays"]
 git-tree-sha1 = "b3f2ff58735b5f024c392fde763f29b057e4b025"
 uuid = "429591f6-91af-11e9-00e2-59fbe8cec110"
 version = "2.2.8"
+
+[[deps.ExceptionUnwrapping]]
+deps = ["Test"]
+git-tree-sha1 = "dcb08a0d93ec0b1cdc4af184b26b591e9695423a"
+uuid = "460bff9d-24e4-43bc-9d9f-a8973cb893f4"
+version = "0.1.10"
 
 [[deps.Expat_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -564,6 +765,12 @@ version = "2.6.2+0"
 git-tree-sha1 = "2140cd04483da90b2da7f99b2add0750504fc39c"
 uuid = "411431e0-e8b7-467b-b5e0-f676ba4f2910"
 version = "0.1.2"
+
+[[deps.FFMPEG]]
+deps = ["FFMPEG_jll"]
+git-tree-sha1 = "b57e3acbe22f8484b4b5ff66a7499717fe1a9cc8"
+uuid = "c87230d0-a227-11e9-1b43-d7ebe4e7570a"
+version = "0.4.1"
 
 [[deps.FFMPEG_jll]]
 deps = ["Artifacts", "Bzip2_jll", "FreeType2_jll", "FriBidi_jll", "JLLWrappers", "LAME_jll", "Libdl", "Ogg_jll", "OpenSSL_jll", "Opus_jll", "PCRE2_jll", "Zlib_jll", "libaom_jll", "libass_jll", "libfdk_aac_jll", "libvorbis_jll", "x264_jll", "x265_jll"]
@@ -657,6 +864,12 @@ git-tree-sha1 = "1ed150b39aebcc805c26b93a8d0122c940f64ce2"
 uuid = "559328eb-81f9-559d-9380-de523a88c83c"
 version = "1.0.14+0"
 
+[[deps.FunctionalCollections]]
+deps = ["Test"]
+git-tree-sha1 = "04cb9cfaa6ba5311973994fe3496ddec19b6292a"
+uuid = "de31a74c-ac4f-5751-b3fd-e18cd04993ca"
+version = "0.5.0"
+
 [[deps.GLFW]]
 deps = ["GLFW_jll"]
 git-tree-sha1 = "35dbc482f0967d8dceaa7ce007d16f9064072166"
@@ -674,6 +887,18 @@ deps = ["ColorTypes", "Colors", "FileIO", "FixedPointNumbers", "FreeTypeAbstract
 git-tree-sha1 = "cbc9e63c209e2859d9c3c7c0a40ebffe2905be69"
 uuid = "e9467ef8-e4e7-5192-8a1a-b1aee30e663a"
 version = "0.10.2"
+
+[[deps.GR]]
+deps = ["Artifacts", "Base64", "DelimitedFiles", "Downloads", "GR_jll", "HTTP", "JSON", "Libdl", "LinearAlgebra", "Preferences", "Printf", "Random", "Serialization", "Sockets", "TOML", "Tar", "Test", "p7zip_jll"]
+git-tree-sha1 = "ddda044ca260ee324c5fc07edb6d7cf3f0b9c350"
+uuid = "28b8d3ca-fb5f-59d9-8090-bfdbd6d07a71"
+version = "0.73.5"
+
+[[deps.GR_jll]]
+deps = ["Artifacts", "Bzip2_jll", "Cairo_jll", "FFMPEG_jll", "Fontconfig_jll", "FreeType2_jll", "GLFW_jll", "JLLWrappers", "JpegTurbo_jll", "Libdl", "Libtiff_jll", "Pixman_jll", "Qt6Base_jll", "Zlib_jll", "libpng_jll"]
+git-tree-sha1 = "278e5e0f820178e8a26df3184fcb2280717c79b1"
+uuid = "d2c73de3-f751-5644-a686-071e5b155ba9"
+version = "0.73.5+0"
 
 [[deps.GeoInterface]]
 deps = ["Extents"]
@@ -715,6 +940,12 @@ version = "0.11.0"
 git-tree-sha1 = "53bb909d1151e57e2484c3d1b53e19552b887fb2"
 uuid = "42e2da0e-8278-4e71-bc24-59509adca0fe"
 version = "1.0.2"
+
+[[deps.HTTP]]
+deps = ["Base64", "CodecZlib", "ConcurrentUtilities", "Dates", "ExceptionUnwrapping", "Logging", "LoggingExtras", "MbedTLS", "NetworkOptions", "OpenSSL", "Random", "SimpleBufferStream", "Sockets", "URIs", "UUIDs"]
+git-tree-sha1 = "d1d712be3164d61d1fb98e7ce9bcbc6cc06b45ed"
+uuid = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+version = "1.10.8"
 
 [[deps.HarfBuzz_jll]]
 deps = ["Artifacts", "Cairo_jll", "Fontconfig_jll", "FreeType2_jll", "Glib_jll", "Graphite2_jll", "JLLWrappers", "Libdl", "Libffi_jll", "Pkg"]
@@ -798,6 +1029,18 @@ git-tree-sha1 = "be50fe8df3acbffa0274a744f1a99d29c45a57f4"
 uuid = "1d5cc7b8-4909-519e-a0f8-d0f5ad9712d0"
 version = "2024.1.0+0"
 
+[[deps.Interact]]
+deps = ["CSSUtil", "InteractBase", "JSON", "Knockout", "Observables", "OrderedCollections", "Reexport", "WebIO", "Widgets"]
+git-tree-sha1 = "c5091992248c7134af7c90554305c600d5d9012b"
+uuid = "c601a237-2ae4-5e1e-952c-7a85b0c7eef1"
+version = "0.10.5"
+
+[[deps.InteractBase]]
+deps = ["Base64", "CSSUtil", "Colors", "Dates", "JSExpr", "JSON", "Knockout", "Observables", "OrderedCollections", "Random", "WebIO", "Widgets"]
+git-tree-sha1 = "aa5daeff326db0a9126a225b58ca04ae12f57259"
+uuid = "d3863d7c-f0c8-5437-a7b4-3ae773c01009"
+version = "0.10.10"
+
 [[deps.InteractiveUtils]]
 deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
@@ -832,16 +1075,12 @@ version = "0.22.13"
 git-tree-sha1 = "dba9ddf07f77f60450fe5d2e2beb9854d9a49bd0"
 uuid = "8197267c-284f-5f27-9208-e0e47529a953"
 version = "0.7.10"
+weakdeps = ["Random", "RecipesBase", "Statistics"]
 
     [deps.IntervalSets.extensions]
     IntervalSetsRandomExt = "Random"
     IntervalSetsRecipesBaseExt = "RecipesBase"
     IntervalSetsStatisticsExt = "Statistics"
-
-    [deps.IntervalSets.weakdeps]
-    Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
-    RecipesBase = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
-    Statistics = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [[deps.IrrationalConstants]]
 git-tree-sha1 = "630b497eafcc20001bba38a4651b327dcfc491d2"
@@ -864,11 +1103,23 @@ git-tree-sha1 = "a3f24677c21f5bbe9d2a714f95dcd58337fb2856"
 uuid = "82899510-4779-5014-852e-03e436cf321d"
 version = "1.0.0"
 
+[[deps.JLFzf]]
+deps = ["Pipe", "REPL", "Random", "fzf_jll"]
+git-tree-sha1 = "a53ebe394b71470c7f97c2e7e170d51df21b17af"
+uuid = "1019f520-868f-41f5-a6de-eb00f4b6a39c"
+version = "0.1.7"
+
 [[deps.JLLWrappers]]
 deps = ["Artifacts", "Preferences"]
 git-tree-sha1 = "7e5d6779a1e09a36db2a7b6cff50942a0a7d0fca"
 uuid = "692b3bcd-3c85-4b1f-b108-f13ce0eb3210"
 version = "1.5.0"
+
+[[deps.JSExpr]]
+deps = ["JSON", "MacroTools", "Observables", "WebIO"]
+git-tree-sha1 = "b413a73785b98474d8af24fd4c8a975e31df3658"
+uuid = "97c1335a-c9c5-57fe-bc5d-ec35cebe8660"
+version = "0.5.4"
 
 [[deps.JSON]]
 deps = ["Dates", "Mmap", "Parsers", "Unicode"]
@@ -894,11 +1145,23 @@ git-tree-sha1 = "7d703202e65efa1369de1279c162b915e245eed1"
 uuid = "5ab0869b-81aa-558d-bb23-cbf5423bbe9b"
 version = "0.6.9"
 
+[[deps.Knockout]]
+deps = ["JSExpr", "JSON", "Observables", "Test", "WebIO"]
+git-tree-sha1 = "91835de56d816864f1c38fb5e3fad6eb1e741271"
+uuid = "bcebb21b-c2e3-54f8-a781-646b90f6d2cc"
+version = "0.2.6"
+
 [[deps.LAME_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "170b660facf5df5de098d866564877e119141cbd"
 uuid = "c1c5ebd0-6772-5130-a774-d5fcae4a789d"
 version = "3.100.2+0"
+
+[[deps.LERC_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "bf36f528eec6634efc60d7ec062008f171071434"
+uuid = "88015f11-f218-50d7-93a8-a6af411a945d"
+version = "3.0.0+1"
 
 [[deps.LLVMOpenMP_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
@@ -916,6 +1179,20 @@ version = "2.10.2+0"
 git-tree-sha1 = "50901ebc375ed41dbf8058da26f9de442febbbec"
 uuid = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 version = "1.3.1"
+
+[[deps.Latexify]]
+deps = ["Format", "InteractiveUtils", "LaTeXStrings", "MacroTools", "Markdown", "OrderedCollections", "Requires"]
+git-tree-sha1 = "e0b5cd21dc1b44ec6e64f351976f961e6f31d6c4"
+uuid = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
+version = "0.16.3"
+
+    [deps.Latexify.extensions]
+    DataFramesExt = "DataFrames"
+    SymEngineExt = "SymEngine"
+
+    [deps.Latexify.weakdeps]
+    DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
+    SymEngine = "123dc426-2d89-5057-bbad-38513e3affd8"
 
 [[deps.LazyArtifacts]]
 deps = ["Artifacts", "Pkg"]
@@ -989,6 +1266,12 @@ git-tree-sha1 = "0c4f9c4f1a50d8f35048fa0532dabbadf702f81e"
 uuid = "4b2f31a3-9ecc-558c-b454-b3730dcb73e9"
 version = "2.40.1+0"
 
+[[deps.Libtiff_jll]]
+deps = ["Artifacts", "JLLWrappers", "JpegTurbo_jll", "LERC_jll", "Libdl", "XZ_jll", "Zlib_jll", "Zstd_jll"]
+git-tree-sha1 = "2da088d113af58221c52828a80378e16be7d037a"
+uuid = "89763e89-9b03-5906-acba-b20f662cd828"
+version = "4.5.1+1"
+
 [[deps.Libuuid_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "5ee6203157c120d79034c748a2acba45b82b8807"
@@ -1017,6 +1300,12 @@ version = "0.3.27"
 
 [[deps.Logging]]
 uuid = "56ddb016-857b-54e1-b83d-db4d58db5568"
+
+[[deps.LoggingExtras]]
+deps = ["Dates", "Logging"]
+git-tree-sha1 = "c1dd6d7978c12545b4179fb6153b9250c96b0075"
+uuid = "e6f89c97-d47a-5376-807f-9c37f3926c36"
+version = "1.0.3"
 
 [[deps.MIMEs]]
 git-tree-sha1 = "65f28ad4b594aebe22157d6fac869786a255b7eb"
@@ -1062,10 +1351,21 @@ git-tree-sha1 = "1865d0b8a2d91477c8b16b49152a32764c7b1f5f"
 uuid = "0a4f8689-d25c-4efe-a92b-7142dfc1aa53"
 version = "0.6.0"
 
+[[deps.MbedTLS]]
+deps = ["Dates", "MbedTLS_jll", "MozillaCACerts_jll", "NetworkOptions", "Random", "Sockets"]
+git-tree-sha1 = "c067a280ddc25f196b5e7df3877c6b226d390aaf"
+uuid = "739be429-bea8-5141-9913-cc70e7f3736d"
+version = "1.1.9"
+
 [[deps.MbedTLS_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
 version = "2.28.2+1"
+
+[[deps.Measures]]
+git-tree-sha1 = "c13304c81eec1ed3af7fc20e75fb6b26092a1102"
+uuid = "442fdcdd-2543-5da2-b0f3-8c86c306513e"
+version = "0.3.2"
 
 [[deps.MeshIO]]
 deps = ["ColorTypes", "FileIO", "GeometryBasics", "Printf"]
@@ -1156,6 +1456,12 @@ deps = ["Artifacts", "Libdl"]
 uuid = "05823500-19ac-5b8b-9628-191a04bc5112"
 version = "0.8.1+2"
 
+[[deps.OpenSSL]]
+deps = ["BitFlags", "Dates", "MozillaCACerts_jll", "OpenSSL_jll", "Sockets"]
+git-tree-sha1 = "38cb508d080d21dc1128f7fb04f20387ed4c0af4"
+uuid = "4d8831e6-92b7-49fb-bdf8-b643e874388c"
+version = "1.4.3"
+
 [[deps.OpenSSL_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "3da7367955dcc5c54c1ba4d402ccdc09a1a3e046"
@@ -1214,6 +1520,17 @@ git-tree-sha1 = "8489905bcdbcfac64d1daa51ca07c0d8f0283821"
 uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
 version = "2.8.1"
 
+[[deps.Pidfile]]
+deps = ["FileWatching", "Test"]
+git-tree-sha1 = "2d8aaf8ee10df53d0dfb9b8ee44ae7c04ced2b03"
+uuid = "fa939f87-e72e-5be4-a000-7fc836dbe307"
+version = "1.3.0"
+
+[[deps.Pipe]]
+git-tree-sha1 = "6842804e7867b115ca9de748a0cf6b364523c16d"
+uuid = "b98c9c47-44ae-5843-9183-064241ee97a0"
+version = "1.3.0"
+
 [[deps.Pixman_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "LLVMOpenMP_jll", "Libdl"]
 git-tree-sha1 = "35621f10a7531bc8fa58f74610b1bfb70a3cfc6b"
@@ -1231,11 +1548,37 @@ git-tree-sha1 = "f9501cc0430a26bc3d156ae1b5b0c1b47af4d6da"
 uuid = "eebad327-c553-4316-9ea0-9fa01ccd7688"
 version = "0.3.3"
 
+[[deps.PlotThemes]]
+deps = ["PlotUtils", "Statistics"]
+git-tree-sha1 = "1f03a2d339f42dca4a4da149c7e15e9b896ad899"
+uuid = "ccf2f8ad-2431-5c83-bf29-c5338b663b6a"
+version = "3.1.0"
+
 [[deps.PlotUtils]]
 deps = ["ColorSchemes", "Colors", "Dates", "PrecompileTools", "Printf", "Random", "Reexport", "Statistics"]
 git-tree-sha1 = "7b1a9df27f072ac4c9c7cbe5efb198489258d1f5"
 uuid = "995b91a9-d308-5afd-9ec6-746e21dbc043"
 version = "1.4.1"
+
+[[deps.Plots]]
+deps = ["Base64", "Contour", "Dates", "Downloads", "FFMPEG", "FixedPointNumbers", "GR", "JLFzf", "JSON", "LaTeXStrings", "Latexify", "LinearAlgebra", "Measures", "NaNMath", "Pkg", "PlotThemes", "PlotUtils", "PrecompileTools", "Printf", "REPL", "Random", "RecipesBase", "RecipesPipeline", "Reexport", "RelocatableFolders", "Requires", "Scratch", "Showoff", "SparseArrays", "Statistics", "StatsBase", "UUIDs", "UnicodeFun", "UnitfulLatexify", "Unzip"]
+git-tree-sha1 = "442e1e7ac27dd5ff8825c3fa62fbd1e86397974b"
+uuid = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+version = "1.40.4"
+
+    [deps.Plots.extensions]
+    FileIOExt = "FileIO"
+    GeometryBasicsExt = "GeometryBasics"
+    IJuliaExt = "IJulia"
+    ImageInTerminalExt = "ImageInTerminal"
+    UnitfulExt = "Unitful"
+
+    [deps.Plots.weakdeps]
+    FileIO = "5789e2e9-d7fb-5bc7-8068-2c6fae9b9549"
+    GeometryBasics = "5c1252a2-5f33-56bf-86c9-59e7332b4326"
+    IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
+    ImageInTerminal = "d8c32880-2388-543b-8c61-d9f865259254"
+    Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [[deps.PlutoUI]]
 deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
@@ -1281,6 +1624,12 @@ git-tree-sha1 = "18e8f4d1426e965c7b532ddd260599e1510d26ce"
 uuid = "4b34888f-f399-49d4-9bb3-47ed5cae4e65"
 version = "1.0.0"
 
+[[deps.Qt6Base_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "Fontconfig_jll", "Glib_jll", "JLLWrappers", "Libdl", "Libglvnd_jll", "OpenSSL_jll", "Vulkan_Loader_jll", "Xorg_libSM_jll", "Xorg_libXext_jll", "Xorg_libXrender_jll", "Xorg_libxcb_jll", "Xorg_xcb_util_cursor_jll", "Xorg_xcb_util_image_jll", "Xorg_xcb_util_keysyms_jll", "Xorg_xcb_util_renderutil_jll", "Xorg_xcb_util_wm_jll", "Zlib_jll", "libinput_jll", "xkbcommon_jll"]
+git-tree-sha1 = "37b7bb7aabf9a085e0044307e1717436117f2b3b"
+uuid = "c0090381-4147-56d7-9ebc-da0b1113ec56"
+version = "6.5.3+1"
+
 [[deps.QuadGK]]
 deps = ["DataStructures", "LinearAlgebra"]
 git-tree-sha1 = "9b23c31e76e333e6fb4c1595ae6afa74966a729e"
@@ -1309,6 +1658,18 @@ weakdeps = ["FixedPointNumbers"]
 
     [deps.Ratios.extensions]
     RatiosFixedPointNumbersExt = "FixedPointNumbers"
+
+[[deps.RecipesBase]]
+deps = ["PrecompileTools"]
+git-tree-sha1 = "5c3d09cc4f31f5fc6af001c250bf1278733100ff"
+uuid = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
+version = "1.3.4"
+
+[[deps.RecipesPipeline]]
+deps = ["Dates", "NaNMath", "PlotUtils", "PrecompileTools", "RecipesBase"]
+git-tree-sha1 = "45cf9fd0ca5839d06ef333c8201714e888486342"
+uuid = "01d81517-befc-4cb6-b9ec-a95719d0359c"
+version = "0.6.12"
 
 [[deps.Reexport]]
 git-tree-sha1 = "45e428421666073eab6f2da5c9d310d99bb12f9b"
@@ -1384,6 +1745,11 @@ deps = ["Random", "Statistics", "Test"]
 git-tree-sha1 = "d263a08ec505853a5ff1c1ebde2070419e3f28e9"
 uuid = "73760f76-fbc4-59ce-8f25-708e95d2df96"
 version = "0.4.0"
+
+[[deps.SimpleBufferStream]]
+git-tree-sha1 = "874e8867b33a00e784c8a7e4b60afe9e037b74e1"
+uuid = "777ac1f9-54b0-4bf8-805c-2214025038e7"
+version = "1.1.0"
 
 [[deps.SimpleTraits]]
 deps = ["InteractiveUtils", "MacroTools"]
@@ -1590,6 +1956,53 @@ version = "1.20.0"
     ConstructionBase = "187b0558-2788-49d3-abe0-74a17ed4e7c9"
     InverseFunctions = "3587e190-3f89-42d0-90ee-14403ec27112"
 
+[[deps.UnitfulLatexify]]
+deps = ["LaTeXStrings", "Latexify", "Unitful"]
+git-tree-sha1 = "e2d817cc500e960fdbafcf988ac8436ba3208bfd"
+uuid = "45397f5d-5981-4c77-b2b3-fc36d6e9b728"
+version = "1.6.3"
+
+[[deps.Unzip]]
+git-tree-sha1 = "ca0969166a028236229f63514992fc073799bb78"
+uuid = "41fe7b60-77ed-43a1-b4f0-825fd5a5650d"
+version = "0.2.0"
+
+[[deps.Vulkan_Loader_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Wayland_jll", "Xorg_libX11_jll", "Xorg_libXrandr_jll", "xkbcommon_jll"]
+git-tree-sha1 = "2f0486047a07670caad3a81a075d2e518acc5c59"
+uuid = "a44049a8-05dd-5a78-86c9-5fde0876e88c"
+version = "1.3.243+0"
+
+[[deps.Wayland_jll]]
+deps = ["Artifacts", "EpollShim_jll", "Expat_jll", "JLLWrappers", "Libdl", "Libffi_jll", "Pkg", "XML2_jll"]
+git-tree-sha1 = "7558e29847e99bc3f04d6569e82d0f5c54460703"
+uuid = "a2964d1f-97da-50d4-b82a-358c7fce9d89"
+version = "1.21.0+1"
+
+[[deps.Wayland_protocols_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "93f43ab61b16ddfb2fd3bb13b3ce241cafb0e6c9"
+uuid = "2381bf8a-dfd0-557d-9999-79630e7b1b91"
+version = "1.31.0+0"
+
+[[deps.WebIO]]
+deps = ["AssetRegistry", "Base64", "Distributed", "FunctionalCollections", "JSON", "Logging", "Observables", "Pkg", "Random", "Requires", "Sockets", "UUIDs", "WebSockets", "Widgets"]
+git-tree-sha1 = "0eef0765186f7452e52236fa42ca8c9b3c11c6e3"
+uuid = "0f1e0344-ec1d-5b48-a673-e5cf874b6c29"
+version = "0.8.21"
+
+[[deps.WebSockets]]
+deps = ["Base64", "Dates", "HTTP", "Logging", "Sockets"]
+git-tree-sha1 = "4162e95e05e79922e44b9952ccbc262832e4ad07"
+uuid = "104b5d7c-a370-577a-8038-80a2059c5097"
+version = "1.6.0"
+
+[[deps.Widgets]]
+deps = ["Colors", "Dates", "Observables", "OrderedCollections"]
+git-tree-sha1 = "fcdae142c1cfc7d89de2d11e08721d0f2f86c98a"
+uuid = "cc8bc4a8-27d6-5769-a93b-9d913e69aa62"
+version = "0.6.6"
+
 [[deps.WoodburyMatrices]]
 deps = ["LinearAlgebra", "SparseArrays"]
 git-tree-sha1 = "c1a7aa6219628fcd757dede0ca95e245c5cd9511"
@@ -1607,6 +2020,24 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Libgcrypt_jll", "Libgpg_error_jll"
 git-tree-sha1 = "91844873c4085240b95e795f692c4cec4d805f8a"
 uuid = "aed1982a-8fda-507f-9586-7b0439959a61"
 version = "1.1.34+0"
+
+[[deps.XZ_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl"]
+git-tree-sha1 = "ac88fb95ae6447c8dda6a5503f3bafd496ae8632"
+uuid = "ffd25f8a-64ca-5728-b0f7-c24cf3aae800"
+version = "5.4.6+0"
+
+[[deps.Xorg_libICE_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl"]
+git-tree-sha1 = "326b4fea307b0b39892b3e85fa451692eda8d46c"
+uuid = "f67eecfb-183a-506d-b269-f58e52b52d7c"
+version = "1.1.1+0"
+
+[[deps.Xorg_libSM_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Xorg_libICE_jll"]
+git-tree-sha1 = "3796722887072218eabafb494a13c963209754ce"
+uuid = "c834827a-8449-5923-a945-d239c165b7dd"
+version = "1.2.4+0"
 
 [[deps.Xorg_libX11_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Xorg_libxcb_jll", "Xorg_xtrans_jll"]
@@ -1680,6 +2111,60 @@ git-tree-sha1 = "b4bfde5d5b652e22b9c790ad00af08b6d042b97d"
 uuid = "c7cfdc94-dc32-55de-ac96-5a1b8d977c5b"
 version = "1.15.0+0"
 
+[[deps.Xorg_libxkbfile_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Xorg_libX11_jll"]
+git-tree-sha1 = "730eeca102434283c50ccf7d1ecdadf521a765a4"
+uuid = "cc61e674-0454-545c-8b26-ed2c68acab7a"
+version = "1.1.2+0"
+
+[[deps.Xorg_xcb_util_cursor_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Xorg_xcb_util_image_jll", "Xorg_xcb_util_jll", "Xorg_xcb_util_renderutil_jll"]
+git-tree-sha1 = "04341cb870f29dcd5e39055f895c39d016e18ccd"
+uuid = "e920d4aa-a673-5f3a-b3d7-f755a4d47c43"
+version = "0.1.4+0"
+
+[[deps.Xorg_xcb_util_image_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Xorg_xcb_util_jll"]
+git-tree-sha1 = "0fab0a40349ba1cba2c1da699243396ff8e94b97"
+uuid = "12413925-8142-5f55-bb0e-6d7ca50bb09b"
+version = "0.4.0+1"
+
+[[deps.Xorg_xcb_util_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Xorg_libxcb_jll"]
+git-tree-sha1 = "e7fd7b2881fa2eaa72717420894d3938177862d1"
+uuid = "2def613f-5ad1-5310-b15b-b15d46f528f5"
+version = "0.4.0+1"
+
+[[deps.Xorg_xcb_util_keysyms_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Xorg_xcb_util_jll"]
+git-tree-sha1 = "d1151e2c45a544f32441a567d1690e701ec89b00"
+uuid = "975044d2-76e6-5fbe-bf08-97ce7c6574c7"
+version = "0.4.0+1"
+
+[[deps.Xorg_xcb_util_renderutil_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Xorg_xcb_util_jll"]
+git-tree-sha1 = "dfd7a8f38d4613b6a575253b3174dd991ca6183e"
+uuid = "0d47668e-0667-5a69-a72c-f761630bfb7e"
+version = "0.3.9+1"
+
+[[deps.Xorg_xcb_util_wm_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Xorg_xcb_util_jll"]
+git-tree-sha1 = "e78d10aab01a4a154142c5006ed44fd9e8e31b67"
+uuid = "c22f9ab0-d5fe-5066-847c-f4bb1cd4e361"
+version = "0.4.1+1"
+
+[[deps.Xorg_xkbcomp_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Xorg_libxkbfile_jll"]
+git-tree-sha1 = "330f955bc41bb8f5270a369c473fc4a5a4e4d3cb"
+uuid = "35661453-b289-5fab-8a00-3d9160c6a3a4"
+version = "1.4.6+0"
+
+[[deps.Xorg_xkeyboard_config_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Xorg_xkbcomp_jll"]
+git-tree-sha1 = "691634e5453ad362044e2ad653e79f3ee3bb98c3"
+uuid = "33bec58e-1273-512f-9401-5d533626f822"
+version = "2.39.0+0"
+
 [[deps.Xorg_xtrans_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl"]
 git-tree-sha1 = "e92a1a012a10506618f10b7047e478403a046c77"
@@ -1690,6 +2175,30 @@ version = "1.5.0+0"
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
 version = "1.2.13+1"
+
+[[deps.Zstd_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl"]
+git-tree-sha1 = "e678132f07ddb5bfa46857f0d7620fb9be675d3b"
+uuid = "3161d3a3-bdf6-5164-811a-617609db77b4"
+version = "1.5.6+0"
+
+[[deps.eudev_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "gperf_jll"]
+git-tree-sha1 = "431b678a28ebb559d224c0b6b6d01afce87c51ba"
+uuid = "35ca27e7-8b34-5b7f-bca9-bdc33f59eb06"
+version = "3.2.9+0"
+
+[[deps.fzf_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl"]
+git-tree-sha1 = "a68c9655fbe6dfcab3d972808f1aafec151ce3f8"
+uuid = "214eeab7-80f7-51ab-84ad-2988db7cef09"
+version = "0.43.0+0"
+
+[[deps.gperf_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "3516a5630f741c9eecb3720b1ec9d8edc3ecc033"
+uuid = "1a1c6b14-54f6-533d-8383-74cd7377aa70"
+version = "3.1.1+0"
 
 [[deps.isoband_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -1714,11 +2223,23 @@ deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
 version = "5.8.0+1"
 
+[[deps.libevdev_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "141fe65dc3efabb0b1d5ba74e91f6ad26f84cc22"
+uuid = "2db6ffa8-e38f-5e21-84af-90c45d0032cc"
+version = "1.11.0+0"
+
 [[deps.libfdk_aac_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "daacc84a041563f965be61859a36e17c4e4fcd55"
 uuid = "f638f0a6-7fb0-5443-88ba-1cc74229b280"
 version = "2.0.2+0"
+
+[[deps.libinput_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "eudev_jll", "libevdev_jll", "mtdev_jll"]
+git-tree-sha1 = "ad50e5b90f222cfe78aa3d5183a20a12de1322ce"
+uuid = "36db933b-70db-51c0-b978-0f229ee0e533"
+version = "1.18.0+0"
 
 [[deps.libpng_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Zlib_jll"]
@@ -1737,6 +2258,12 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Ogg_jll", "Pkg"]
 git-tree-sha1 = "b910cb81ef3fe6e78bf6acee440bda86fd6ae00c"
 uuid = "f27f6e37-5d2b-51aa-960f-b287f2bc3b7a"
 version = "1.3.7+1"
+
+[[deps.mtdev_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "814e154bdb7be91d78b6802843f76b6ece642f11"
+uuid = "009596ad-96f7-51b1-9f1b-5ce2d5e8a71e"
+version = "1.1.6+0"
 
 [[deps.nghttp2_jll]]
 deps = ["Artifacts", "Libdl"]
@@ -1765,14 +2292,29 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "ee567a171cce03570d77ad3a43e90218e38937a9"
 uuid = "dfaa095f-4041-5dcd-9319-2fabd8486b76"
 version = "3.5.0+0"
+
+[[deps.xkbcommon_jll]]
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Wayland_jll", "Wayland_protocols_jll", "Xorg_libxcb_jll", "Xorg_xkeyboard_config_jll"]
+git-tree-sha1 = "9c304562909ab2bab0262639bd4f444d7bc2be37"
+uuid = "d8fb68d0-12a3-5cfd-a85a-d49703b185fd"
+version = "1.4.1+1"
 """
 
 # ╔═╡ Cell order:
 # ╟─8fac769f-6210-4307-a259-856f5854fad2
+# ╟─39ebb5a4-2d3b-4037-b695-c7cc7f70c8df
 # ╠═d6f5e820-3ae0-11ef-27be-a38624e4912d
+# ╟─92ab1be4-aab2-4dcc-894d-4c393971eb3e
 # ╠═f3ca2576-2739-408a-93ca-ce00a6327c4f
+# ╟─cbca0c02-3ade-4f19-a18d-6c7aa9534ef9
+# ╠═74ffa81f-2455-429c-9b91-3f45db97602c
+# ╟─554ecabc-1cba-40b0-8453-bfc2c46cf3b8
+# ╠═d119a8cc-da20-4034-abae-1beab1afafd6
+# ╟─6ff7794d-cbc6-473f-9b2b-b1e054f05840
+# ╠═87c40dac-7a9c-4a65-9710-b23ff60af966
 # ╠═49e9c322-6d5f-4d59-b7d0-74f124fb0d2c
 # ╠═6380f334-7db7-4043-97c6-46012c7dd3a8
+# ╟─8b859bbe-83fb-40b1-bfaa-3a1b4399f616
 # ╠═a6c2363b-d6bc-4002-b2f1-c38e8f289b5c
 # ╠═08790b76-0325-4470-9768-24cfed6baaac
 # ╠═1b6f8670-8228-4af2-8cea-cb08341aa31a
@@ -1792,10 +2334,10 @@ version = "3.5.0+0"
 # ╠═737e805f-89fc-487a-a6e5-4d82b5947b51
 # ╠═767185ee-4ec6-43bb-92ef-1164f431a03b
 # ╠═644c3791-917b-47ba-8e6c-372e500b259f
+# ╟─4749cc90-6da6-4b7e-8cef-d8f781c59ff7
 # ╠═f5f41ead-a22d-4b30-9c2c-920bc153d195
 # ╠═3fd73f80-7a0b-4878-97fe-0083b2845f59
 # ╠═7b8c9c79-c43d-4b85-b464-871c2a5ea8e7
-# ╠═c834353e-8942-482b-8300-320315cbf030
 # ╠═f22c3d68-3f95-456b-b9d6-0adb30b0aa11
 # ╠═db51b52a-be4b-4bef-9045-5b745ba754ff
 # ╠═acf597b5-f5ee-44ea-83ef-78b057feead3
@@ -1810,13 +2352,21 @@ version = "3.5.0+0"
 # ╠═0afece51-b396-43bf-8081-d4852c56216a
 # ╠═911a0a09-f47f-4af8-9717-3384c879fc0b
 # ╠═e885e263-0220-41b3-a9db-dbf93e6a3699
-# ╠═4f940b09-d8c0-4ca2-ac42-436078c45368
 # ╠═e25199ca-9183-4daa-bdbe-6076569518b1
 # ╠═379d842a-1dfb-438e-85f0-36fe716297f9
 # ╠═7910f290-225e-4f03-9bcf-8d9fbd1a5636
 # ╠═4c106990-d55d-4266-ac53-0458725bb68f
 # ╠═e6545141-b37b-4f53-9990-1b6e49b625ff
 # ╠═b055a193-08a7-4fe9-8dbe-1086c51b46fe
-# ╠═9ec8c454-618d-4aad-9ed7-8ec7d47dd51b
+# ╠═b1b9c4d8-6038-46ac-bb37-d7921265ccf0
+# ╟─ba630d7b-7425-4341-b9d4-8c0a93a028f6
+# ╠═69697c8b-9932-4511-9d34-c4008109a84f
+# ╟─e4aac751-ed69-491c-8450-b8de844b3993
+# ╠═d2bd035c-40e3-4d69-a204-fab8d9c9c067
+# ╟─1e1cb55b-8da4-4201-bfe3-e035e4e7b368
+# ╠═43a1b429-0259-4766-9902-4c592c3d5295
+# ╠═6b155ac3-a839-4dc5-be8d-941296380d61
+# ╟─12af3d01-9582-40ce-83e8-d990c29416c1
+# ╠═281eb34d-6db1-4a64-86c1-a981625550e7
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
